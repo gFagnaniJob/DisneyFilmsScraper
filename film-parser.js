@@ -19,26 +19,17 @@ const getFilmData = async () => {
 
             const innerHTML = await rp(link);
 
-            charactersParser(innerHTML, index+1, name, link);
-
-            return {
-                index: index + 1,
-                name,
-                // personaggiMap,
-                link: link.indexOf(".php") > -1 ? null : link
-            }
+            return charactersParser(innerHTML, index+1, name, link)
+                .then(data => {
+                    return data;
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         })
         .get();
 
     return Promise.all(filmMap);
 }
-
-// getFilmData()
-//     .then(data => {
-//         console.log(data);
-//     })
-//     .catch(err => {
-//         console.log(err);
-//     })
 
 module.exports = getFilmData;
