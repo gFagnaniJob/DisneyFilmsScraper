@@ -9,21 +9,17 @@ const classiciITAURL = '/wiki/Classici_Disney';
 
 const charactersParser = require('./characters-parser');
 
-
-
 const getFilmData = async () => {
     const html = await rp(baseITAURL + classiciITAURL);
 
-    ($('#Elenco_completo', html).parent().next().find('tbody > tr').next().find('tr > td > i > a').length);
     const filmMap = $('#Elenco_completo', html).parent().next().find('tbody > tr').next().find('tr > td > i > a')
         .map(async (index, element) => {
             const link = baseITAURL + element.attribs.href;
             const name = element.children[0].data;
 
             const innerHTML = await rp(link);
-            
-            charactersParser(innerHTML);
 
+            charactersParser(innerHTML, index+1, name, link);
 
             return {
                 index: index + 1,

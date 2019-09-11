@@ -1,18 +1,24 @@
-const getPersonaggiData = async (html) => {
-    //     const personaggi = $("#Personaggi", innerHTML).next().next().find('li > a')
-//         .map((index, element) => {
-//             const name = element.children[0].data;
-//             return {
-//                 index: index + 1,
-//                 name
-//             }
-//         });
+const rp = require('request-promise');
+const $ = require('cheerio');
 
-//     const personaggiMap = $(".sinottico_testo_centrale > div > ul > li", innerHTML)
-//         .map((index, element) => {
-//             const name = element.children[0].data;
-//             console.log(name);
-//         });
+const getPersonaggiData = async (html, filmIndex, filmName) => {
+    html = html.substring(html.indexOf('<a href="/wiki/Doppiaggio" title="Doppiaggio">Doppiatori originali</a>'), html.indexOf('<a href="/wiki/Doppiaggio" title="Doppiaggio">Doppiatori italiani</a>'));
+    console.log(html);
+
+    const personaggiMap = $('li > a', html)
+        .map((index, element) => {
+            var personaggio = element.children[0].data;
+
+            return {
+                filmIndex,
+                filmName,
+                index,
+                name: personaggio
+            }
+        })
+        .get();
+
+    console.log(personaggiMap);
 }
 
 module.exports = getPersonaggiData;
